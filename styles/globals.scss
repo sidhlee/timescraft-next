@@ -1,0 +1,773 @@
+$tablet: 700px;
+$desktop: 1200px;
+$wide: 2000px;
+
+:root {
+  /* Colors */
+  --clr-white: #efefef;
+  --clr-black-alpha: rgba(0, 0, 0, 82%);
+  --clr-red-alpha: rgba(75, 10, 10, 82%);
+  --clr-correct: rgb(132, 195, 82);
+  --clr-wrong: rgba(236, 52, 46, 0.8);
+  --clr-focus: rgb(235, 168, 69);
+  --clr-primary: #3b691c;
+  --clr-primary-light: rgba(101, 168, 48, 0.8);
+  --clr-secondary: rgb(86, 48, 29);
+  --clr-secondary-light: #7a4626;
+
+  --text-main: white;
+  --text-inverse: black;
+  --text-mute: #bebebe;
+  --text-yellow: #ffff00;
+
+  --menu-btn-color: #555;
+
+  /* Typography */
+  --fz-sm: 1.33rem;
+  --fz-md: 2rem;
+  --fz-lg: 3rem;
+
+  /* Layouts */
+  --header-height-mobile: 5vh;
+  --header-height-desktop: calc(5vh + 2.5vw);
+  --gap: 0.5rem;
+
+  /* z-index */
+  --z-overlay: 500;
+  --z-menu-btn: 2000;
+  --z-menu: 1500;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+  font-size: 112.5%;
+  @media (min-width: $tablet) {
+    font-size: 150%;
+  }
+
+  @media (min-width: $desktop) {
+    font-size: 150%;
+  }
+  @media (min-width: $wide) {
+    font-size: 170%;
+  }
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  user-select: none;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family: 'VT323', monospace;
+  color: var(--text-main);
+}
+
+/* ======================================
+** Globals
+** ==================================== */
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+p,
+span {
+  font-size: var(--fz-md);
+}
+
+img {
+  display: block;
+  /* don't care if the image grows over its size because they are pixel graphics after all.  */
+  // max-width: 100%;
+  // max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  text-decoration: none;
+}
+
+td {
+  font-size: var(--fz-md);
+}
+
+button {
+  font: inherit;
+  color: var(--clr-white);
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+/* ======================================
+** Utilities
+** ==================================== */
+
+.hidden {
+  display: none !important;
+  opacity: 0;
+}
+
+.zero {
+  font-family: 'Inconsolata', monospace;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+}
+
+// .col {
+//   flex: 1 1 auto;
+// }
+
+.sr-only:not(:focus):not(:active) {
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+}
+
+.mute {
+  color: var(--text-mute);
+}
+
+.btn.btn-correct {
+  outline: 2px solid var(--clr-correct);
+  color: var(--clr-correct);
+}
+.btn.btn-wrong {
+  outline: 2px solid var(--clr-wrong);
+}
+
+/* ======================================
+** Layout
+** ==================================== */
+
+// next.js app wrapper
+#__next {
+  height: 100%;
+}
+
+.app {
+  height: 100%;
+  overflow: hidden;
+  background-image: url('../public/assets/images/bg.png');
+  background-size: cover;
+  background-position: 30%;
+}
+
+.app-container {
+  position: relative;
+  height: 100%;
+  margin: auto;
+
+  @media (min-width: $tablet) {
+    font-size: 150%;
+    max-width: 600px;
+  }
+
+  @media (min-width: $desktop) {
+    font-size: 150%;
+    max-width: 700px;
+  }
+  @media (min-width: $wide) {
+    font-size: 170%;
+    max-width: 1000px;
+  }
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: 6vh 6vw;
+  @media (min-width: $tablet) {
+    padding: 6vh 6vw;
+  }
+}
+
+/* ======================================
+** Components
+** ==================================== */
+.menu-btn {
+  --size: 50px;
+  --bar-height: calc(var(--size) / 10);
+  --gap: calc(var(--bar-height) * 1.2);
+
+  position: fixed;
+  z-index: var(--z-menu-btn);
+  top: 4vw;
+  left: 4vw;
+  width: var(--size);
+  height: var(--size);
+  padding: 10px;
+  span {
+    &::before,
+    &::after {
+      content: '';
+    }
+    &,
+    &::before,
+    &::after {
+      display: block;
+      height: var(--bar-height);
+      width: 100%;
+      background: var(--menu-btn-color);
+    }
+    &::before {
+      --y: calc(-2 * var(--gap));
+      transform: translate3d(0, var(--y), 0);
+    }
+    &::after {
+      transform: translate3d(0, var(--gap), 0);
+    }
+  }
+  &:focus {
+    outline: 2px solid var(--clr-focus);
+  }
+}
+
+.menu {
+  position: absolute;
+  z-index: var(--z-menu);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .menu-content {
+    transform: translateY(-10%);
+    width: 90%;
+    max-width: 800px;
+
+    .menu-title {
+      text-align: center;
+      padding: 1em;
+    }
+    .menu-buttons {
+      display: grid;
+      gap: var(--gap);
+      .btn {
+        justify-self: center;
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  }
+}
+
+.backdrop {
+  /* Backdrop */
+  &:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* underneath overlay, but still on top of app background
+      because this backdrop is nested inside overlay
+      which has a higher stacking context than statically positioned .app element*/
+    z-index: -1;
+    background-color: var(--clr-black-alpha);
+  }
+  &.danger:before {
+    background-color: var(--clr-red-alpha);
+  }
+}
+
+/* Modified from */
+/* http://charliecowan.co.uk/mcbuttongenerator/ */
+.btn {
+  font-size: var(--fz-md);
+  min-width: 40px;
+  outline: 2px solid black;
+  position: relative;
+  margin: 0;
+  display: inline-block;
+  background-image: url('../public/assets/images/button-center.png');
+  background-repeat: repeat;
+  padding: 0 0.25em;
+  text-align: center;
+  text-shadow: 3px 3px #4c4c4c;
+  border-bottom: 4px solid #565656;
+  border-right: 2px solid #565656;
+  border-left: 2px solid #aaa;
+  border-top: 2px solid #aaa;
+  box-sizing: border-box;
+  line-height: 1.1;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  &:hover,
+  &:active,
+  &:focus {
+    outline: 2px solid var(--clr-white);
+  }
+}
+
+.speech-bubble {
+  position: relative;
+  display: grid;
+  place-items: center;
+  background-color: #fff;
+  color: var(--text-inverse);
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 1em;
+  --animate-duration: 350ms;
+  animation-timing-function: cubic-bezier(0, 0.8, 0.51, 1.21);
+
+  &:before,
+  &:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  &:before {
+    left: 10px;
+    bottom: -17px;
+    border: 8px solid;
+    border-color: #333 transparent transparent #333;
+  }
+  &::after {
+    left: 12px;
+    bottom: -12px;
+    border: 6px solid;
+    border-color: #fff transparent transparent #fff;
+  }
+}
+
+/* ======================================
+** Animation
+** ==================================== */
+
+.overlay-warning {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+}
+.flash-warning {
+  animation: warn 300ms linear;
+}
+@keyframes warn {
+  25% {
+    background-color: rgba(75, 10, 10, 0.5);
+  }
+  50% {
+    background-color: rgba(75, 10, 10, 0.3);
+  }
+  75% {
+    background-color: rgba(75, 10, 10, 0.5);
+  }
+}
+
+.app.parallax {
+  background-size: 500%;
+  background-repeat: no-repeat;
+  animation: move-bg 120s alternate infinite linear;
+  @keyframes move-bg {
+    0% {
+      background-position: 30% 70%;
+    }
+    40% {
+      background-position: 0% 100%;
+    }
+    50% {
+      background-position: 50% 75%;
+    }
+    75% {
+      background-position: 75% 0%;
+    }
+    100% {
+      background-position: 0% 30%;
+    }
+  }
+
+  @media (min-width: 700px) {
+    background-size: 350%;
+    background-repeat: no-repeat;
+    animation: move-bg-desktop 120s alternate infinite linear;
+  }
+  @media (min-width: 1200px) {
+    background-size: 200%;
+    background-repeat: no-repeat;
+    animation: move-bg-desktop 120s alternate infinite linear;
+  }
+  @keyframes move-bg-desktop {
+    0% {
+      background-position: 30% 70%;
+    }
+    25% {
+      background-position: 0% 100%;
+    }
+    50% {
+      background-position: 100% 75%;
+    }
+    75% {
+      background-position: 75% 0%;
+    }
+    100% {
+      background-position: 0% 30%;
+    }
+  }
+}
+
+/* ======================================
+** Partials
+** ==================================== */
+
+/* Start Screen */
+.sc-start {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  grid-template-rows: 1fr auto 30vh;
+
+  .title {
+    max-height: 25vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    &__main {
+      margin-top: 1.5rem;
+      height: 80%;
+      max-height: 140px;
+      margin-bottom: 0.5em;
+      img {
+        height: 100%;
+        object-fit: fill;
+      }
+    }
+    &__sub {
+      img {
+        margin: auto;
+      }
+      height: 5vh;
+      width: 80%;
+    }
+  }
+
+  .dashboard {
+    background: var(--clr-black-alpha);
+    width: 80%;
+    margin: 1.75em auto;
+    padding: 1em;
+
+    tr {
+      td:last-of-type {
+        text-align: right;
+      }
+    }
+  }
+
+  .table-select {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+
+    .select-shuffle {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+/* Play Screen */
+.sc-play {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  .header {
+    width: 100%;
+    height: var(--header-height-mobile);
+    .logo {
+      width: 70%;
+      min-width: 200px;
+      margin: auto;
+      img {
+        margin: auto;
+      }
+    }
+    @media (min-width: $desktop) {
+      height: var(--header-height-desktop);
+    }
+  }
+
+  .question {
+    /* You must specify (max-)height when grid area is defined with fr unit, 
+    otherwise the area will grow as much as the size of the content*/
+    height: 40vh;
+    padding-top: 1rem;
+    align-self: center;
+    display: grid;
+    grid-template-columns: 1fr 2vw 1fr;
+    grid-template-rows: 0.2fr 1fr 1fr;
+    .mob {
+      z-index: 50;
+      grid-column: 1 / 2;
+      grid-row: 2 / 4;
+      align-self: center;
+      justify-self: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-position: bottom left;
+      }
+      &-sm {
+        height: 50%;
+        width: 50%;
+      }
+      &-md {
+        height: 70%;
+        width: 70%;
+      }
+      &-lg {
+        height: 100%;
+        width: 100%;
+      }
+      &-xl {
+        height: 180%;
+        width: 180%;
+        position: relative;
+      }
+    }
+    .speech-bubble {
+      z-index: 100;
+      grid-column: 3 / 4;
+      grid-row: 1 / 3;
+      animation-delay: 0.4s;
+    }
+  }
+
+  .hud {
+    width: 100%;
+    z-index: 200;
+    --heart-size: 32px;
+    display: grid;
+    gap: calc(var(--heart-size) * 0.3);
+    grid-template-columns: auto 100px;
+    grid-template-areas:
+      'life time'
+      'progress progress';
+    &__life {
+      grid-area: life;
+      align-self: end;
+      .heart {
+        height: var(--heart-size);
+        width: var(--heart-size);
+      }
+    }
+    &__time {
+      grid-area: time;
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      .hourglass {
+        /* 
+        When img is globally set with max-height&width of 100%
+        it prevents img from growing over it's original size.
+        If you specify both the  width and height of the container and
+        the aspect ratio doesn't exactly match the image's,
+        you will end up with some extra space either:
+        1. to the right of the image (image's narrower than the container)
+        2. to the bottom of the image (image's shorter than the container)                      
+        */
+        width: var(--heart-size);
+        // height: calc(var(--heart-size) * 1.25);
+      }
+    }
+    &__progress {
+      grid-area: progress;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+
+      .exp {
+        flex: 1 1 auto;
+        max-height: 15px;
+        img {
+          object-fit: fill;
+        }
+      }
+    }
+  }
+
+  .answer-buttons {
+    z-index: 250;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    .btn {
+      flex: 1 1 40%;
+      margin: calc(min(0.5rem, 2vw));
+    }
+  }
+}
+
+/* Results Overlay */
+
+.overlay {
+  position: absolute;
+  z-index: var(--z-overlay);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  padding-left: 8vw;
+  padding-right: 8vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .overlay-content {
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+    max-height: 1500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @media (min-width: $tablet) {
+      max-height: 800px;
+    }
+    @media (min-width: $desktop) {
+      max-width: 450px;
+      max-height: 900px;
+    }
+    @media (min-width: $wide) {
+      max-width: 500px;
+      max-height: 1000px;
+    }
+
+    .results--score {
+      // height: 100%;
+
+      header {
+        position: relative;
+        .levelup-img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          transform: scale(1.1);
+        }
+      }
+
+      .table-wrapper {
+        table {
+          display: inline-block;
+          tbody {
+            display: inline-block;
+            width: 100%;
+            tr {
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 0.5em;
+            }
+          }
+          width: 100%;
+          height: 80%;
+          max-height: 20em;
+          td,
+          span {
+            font-size: var(--fz-sm);
+          }
+          td {
+            padding: 0.5 0;
+          }
+          .results--score__total {
+            td,
+            span {
+              font-size: var(--fz-lg);
+            }
+          }
+          tr {
+            td:last-child {
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+
+    .results--died {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .message {
+        text-align: center;
+      }
+
+      h2 {
+        font-size: var(--fz-lg);
+      }
+      p,
+      span {
+        font-size: var(--fz-sm);
+      }
+      span {
+        color: var(--text-yellow);
+      }
+      height: 50%;
+    }
+
+    .results__buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      button:not(:last-of-type) {
+        margin-bottom: 0.5em;
+      }
+    }
+  }
+}
