@@ -1,1 +1,1 @@
-# TimesCraft - Next,js
+# TimesCraft - Next.js
