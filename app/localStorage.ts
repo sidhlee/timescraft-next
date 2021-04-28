@@ -18,6 +18,14 @@ export const saveState = (state: any) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem('state', serializedState);
   } catch (err) {
-    // Ignore write errors
+    // TODO: handle saveState error
+  }
+};
+
+export const clearState = () => {
+  try {
+    localStorage.removeItem('state');
+  } catch (err) {
+    // TODO: handle clearState error
   }
 };
