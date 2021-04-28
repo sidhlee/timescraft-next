@@ -67,8 +67,48 @@ const initialState = {
   isMenuOpen: false,
 };
 
+const savedStates = ['tables', 'score', 'level'] as const;
+
 export const gameplaySlice = createSlice({
   name: 'gameplay',
   initialState,
-  reducers: {},
+  reducers: {
+    load: (state) => {
+      savedStates.forEach((savedState) => {
+        const dataString = window.localStorage.getItem(savedState);
+        if (dataString) {
+          // Redux Toolkit allows us to write "mutating" logic in reducers. It
+          // doesn't actually mutate the state because it uses the Immer library,
+          // which detects changes to a "draft state" and produces a brand new
+          // immutable state based on those changes
+          state[savedState] = JSON.parse(dataString);
+        }
+      });
+    },
+    save: (state) => {},
+    reset: (state) => {
+      state = initialState;
+    },
+    resetPlay: (state) => {
+      state = {
+        ...state,
+        life: 5,
+        clearTime: 0,
+        currentIndex: 0,
+        remainingTime: 9,
+        isMenuOpen: false,
+      };
+    },
+  },
 });
+
+export const { load, reset, resetPlay } = gameplaySlice.actions;
+
+// https://gist.github.com/markerikson/ea4d0a6ce56ee479fe8b356e099f857e
+// https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage
+export const save = () => {
+  savedStates.forEach((savedState) => {
+    const dataString = JSON.stringify(State[savedState]);
+    window.localStorage.setItem(savedState, dataString);
+  });
+};
