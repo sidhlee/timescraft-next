@@ -1,4 +1,15 @@
+import { useSelector, useDispatch } from 'react-redux';
+
 export default function StartScreen() {
+  const selectButtons = [...Array(8)].map((_, i) => {
+    const table = i + 2;
+    return (
+      <button key={i} className={`btn select-${table}`}>
+        {table}
+      </button>
+    );
+  });
+
   return (
     <section className="sc-start page">
       <div className="title">
@@ -22,32 +33,7 @@ export default function StartScreen() {
         </tbody>
       </table>
       <div className="table-select">
-        <button className="btn select-2" data-table="2">
-          2
-        </button>
-        <button className="btn select-3" data-table="3">
-          3
-        </button>
-        <button className="btn select-4" data-table="4">
-          4
-        </button>
-        <button className="btn select-5" data-table="5">
-          5
-        </button>
-
-        <button className="btn select-6" data-table="6">
-          6
-        </button>
-        <button className="btn select-7" data-table="7">
-          7
-        </button>
-        <button className="btn select-8" data-table="8">
-          8
-        </button>
-        <button className="btn select-9" data-table="9">
-          9
-        </button>
-
+        {selectButtons}
         <button className="btn select-shuffle" data-table="shuffle">
           Shuffle!
         </button>
