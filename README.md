@@ -77,3 +77,8 @@ When your site is running, `/public` becomes the root of the site. So you need t
     ]
   }
   ```
+
+### manifest.json: Manifest: Line: 1, column: 1, Syntax error
+
+- [GitHub issue](https://github.com/vercel/next.js/issues/9621)
+  Add `manifest.webmanifest` to `/public` folder.
