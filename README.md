@@ -46,6 +46,10 @@ When your site is running, `/public` becomes the root of the site. So you need t
 }
 ```
 
+## Using Redux in Next.js
+
+- [Redux example](https://github.com/vercel/next.js/tree/canary/examples/with-redux)
+
 ## Troubleshooting
 
 ### Warning: Prop `className` did not match when using styled components

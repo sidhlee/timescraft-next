@@ -1,6 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import Gameplay from '../gameplay/Gameplay';
 
 export default function StartScreen() {
+  const score = useAppSelector((state) => state.gameplay.score);
+  const level = useAppSelector((state) => state.gameplay.level);
+
   const selectButtons = [...Array(8)].map((_, i) => {
     const table = i + 2;
     return (
@@ -24,11 +28,11 @@ export default function StartScreen() {
         <tbody>
           <tr className="dashboard__score">
             <td>Score</td>
-            <td></td>
+            <td>{score}</td>
           </tr>
           <tr className="dashboard__level">
             <td>Level</td>
-            <td></td>
+            <td>{level}</td>
           </tr>
         </tbody>
       </table>

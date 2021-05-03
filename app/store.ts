@@ -3,7 +3,7 @@ import gameplayReducer from '../features/gameplay/gameplaySlice';
 import { saveState } from './localStorage';
 import throttle from 'lodash/throttle'; // tree-shakable
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     gameplay: gameplayReducer,
   },
@@ -27,3 +27,14 @@ store.subscribe(
     });
   }, 1000)
 );
+
+// https://redux-toolkit.js.org/tutorials/typescript#project-setup
+// Define Root State and Dispatch Types
+
+// Inferring types directly from the store
+// so that they can get correctly updated as you add more state slices
+// or modify middleware settings
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export default store;
