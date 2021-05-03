@@ -1,12 +1,12 @@
 import '../styles/globals.scss';
 import { AppProps } from 'next/app';
+import BgContainer from '../components/layout/BgContainer';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { children, ...rest } = pageProps;
   return (
-    <Component {...rest}>
-      <main className="app">{children}</main>
-    </Component>
+    <BgContainer animate={true}>
+      <Component {...pageProps} />
+    </BgContainer>
   );
 }
 
