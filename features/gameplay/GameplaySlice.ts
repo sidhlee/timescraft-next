@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { loadState } from '../../app/localStorage';
+import shuffle from 'lodash/shuffle';
 
 // 2, 3, 4, 5, 6, 7, 8, 9
 const difficultyArrays = [
@@ -89,6 +90,28 @@ export const gameplaySlice = createSlice({
         remainingTime: 9,
         isMenuOpen: false,
       };
+    },
+    updateCurrentQuestions: (
+      state,
+      action: PayloadAction<number | 'shuffle'>
+    ) => {
+      if (action.payload === 'shuffle') {
+        const allQuestions = state.tables.flat();
+        const shuffledQuestions = shuffle(allQuestions).slice(0, 9);
+        state.currentQuestions = shuffledQuestions;
+      } else {
+        const table = action.payload;
+        const tableIndex = table - 2;
+        const questions = state.tables[tableIndex];
+        const shuffledQuestions = shuffle(questions);
+
+        if (table < 2 || table > 9) {
+          throw new Error('invalid table');
+        }
+
+        state.currentQuestions = shuffledQuestions;
+        state.currentTable = table;
+      }
     },
   },
 });

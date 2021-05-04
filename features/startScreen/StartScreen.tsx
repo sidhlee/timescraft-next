@@ -1,14 +1,26 @@
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+
 import Gameplay from '../gameplay/Gameplay';
+import { gameplaySlice } from '../gameplay/gameplaySlice';
 
 export default function StartScreen() {
   const score = useAppSelector((state) => state.gameplay.score);
   const level = useAppSelector((state) => state.gameplay.level);
 
+  const dispatch = useAppDispatch();
+
+  const selectTable = (tableOrShuffle: number | 'shuffle') => {
+    dispatch(gameplaySlice.actions.updateCurrentQuestions(tableOrShuffle));
+  };
+
   const selectButtons = [...Array(8)].map((_, i) => {
     const table = i + 2;
     return (
-      <button key={i} className={`btn select-${table}`}>
+      <button
+        key={i}
+        className={`btn select-${table}`}
+        onClick={() => selectTable(table)}
+      >
         {table}
       </button>
     );
@@ -38,7 +50,10 @@ export default function StartScreen() {
       </table>
       <div className="table-select">
         {selectButtons}
-        <button className="btn select-shuffle" data-table="shuffle">
+        <button
+          className="btn select-shuffle"
+          onClick={() => selectTable('shuffle')}
+        >
           Shuffle!
         </button>
       </div>
