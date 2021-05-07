@@ -10,7 +10,7 @@ export default function StartScreen() {
   const dispatch = useAppDispatch();
 
   const selectTable = (tableOrShuffle: number | 'shuffle') => {
-    dispatch(gameplaySlice.actions.updateCurrentQuestions(tableOrShuffle));
+    dispatch(gameplaySlice.actions.selectTable(tableOrShuffle));
   };
 
   const selectButtons = [...Array(8)].map((_, i) => {

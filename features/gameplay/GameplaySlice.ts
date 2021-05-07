@@ -91,10 +91,7 @@ export const gameplaySlice = createSlice({
         isMenuOpen: false,
       };
     },
-    updateCurrentQuestions: (
-      state,
-      action: PayloadAction<number | 'shuffle'>
-    ) => {
+    selectTable: (state, action: PayloadAction<number | 'shuffle'>) => {
       if (action.payload === 'shuffle') {
         const allQuestions = state.tables.flat();
         const shuffledQuestions = shuffle(allQuestions).slice(0, 9);
