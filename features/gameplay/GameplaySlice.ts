@@ -62,7 +62,7 @@ const persistedState = loadState();
 const initialState = {
   tables: TABLES,
   currentIndex: 0,
-  currentTable: 2,
+  currentTable: null,
   currentQuestions: TABLES[0],
   life: 5,
   clearTime: 0,
