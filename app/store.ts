@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import gameplayReducer from '../features/gameplay/gameplaySlice';
+import screenReducer from './appSlice';
 import { saveState } from './localStorage';
 import throttle from 'lodash/throttle'; // tree-shakable
 
 const store = configureStore({
   reducer: {
+    app: screenReducer,
     gameplay: gameplayReducer,
   },
 });

@@ -1,8 +1,12 @@
 import Head from 'next/head';
+import { useAppSelector } from '../app/hooks';
 import SEO from '../components/seo/SEO';
+import Gameplay from '../features/gameplay/Gameplay';
 import StartScreen from '../features/startScreen/StartScreen';
 
 export default function Home() {
+  const currentTable = useAppSelector((state) => state.gameplay.currentTable);
+
   return (
     <>
       <Head>
@@ -20,7 +24,8 @@ export default function Home() {
       </Head>
 
       <main id="main" className="app-container">
-        <StartScreen />
+        {!currentTable && <StartScreen />}
+        {currentTable && <Gameplay />}
       </main>
     </>
   );

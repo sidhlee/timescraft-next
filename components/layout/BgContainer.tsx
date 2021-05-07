@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { useAppSelector } from '../../app/hooks';
 
 const bgAnimationCss = css`
   background-size: 500%;
@@ -61,11 +62,13 @@ const StyledBgContainer = styled('div')<{ animate: boolean }>`
   ${(props) => (props.animate ? bgAnimationCss : null)}
 `;
 
-type BgContainerProps = {
-  animate: boolean;
-};
+type BgContainerProps = {};
 
-const BgContainer: React.FC<BgContainerProps> = ({ animate, children }) => {
+const BgContainer: React.FC<BgContainerProps> = ({ children }) => {
+  const screen = useAppSelector((state) => state.app.screen);
+
+  const animate = screen === 'start' || screen === 'score';
+
   return <StyledBgContainer animate={animate}>{children}</StyledBgContainer>;
 };
 

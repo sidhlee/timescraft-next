@@ -8,7 +8,7 @@ import store from '../app/store';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <BgContainer animate={true}>
+      <BgContainer>
         <Component {...pageProps} />
       </BgContainer>
     </Provider>

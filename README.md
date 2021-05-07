@@ -50,6 +50,12 @@ When your site is running, `/public` becomes the root of the site. So you need t
 
 - [Redux example](https://github.com/vercel/next.js/tree/canary/examples/with-redux)
 
+### [Redux Toolkit] The state of each slice must be a mutable object
+
+You cannot have a primitive value as the state of a slice
+
+- [Mutating and Returning State](https://redux-toolkit.js.org/usage/immer-reducers#mutating-and-returning-state)
+
 ## Troubleshooting
 
 ### Warning: Prop `className` did not match when using styled components

@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-
-import Gameplay from '../gameplay/Gameplay';
+import { setScreen, Screen, appSlice } from '../../app/appSlice';
 import { gameplaySlice } from '../gameplay/gameplaySlice';
 
 export default function StartScreen() {
@@ -13,13 +12,21 @@ export default function StartScreen() {
     dispatch(gameplaySlice.actions.selectTable(tableOrShuffle));
   };
 
+  const setScreen = (screen: Screen) => {
+    dispatch(appSlice.actions.setScreen(screen));
+  };
+
   const selectButtons = [...Array(8)].map((_, i) => {
     const table = i + 2;
     return (
       <button
         key={i}
         className={`btn select-${table}`}
-        onClick={() => selectTable(table)}
+        onClick={() => {
+          selectTable(table);
+          console.log('click');
+          setScreen('play');
+        }}
       >
         {table}
       </button>
