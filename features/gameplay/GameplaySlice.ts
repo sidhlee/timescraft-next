@@ -14,7 +14,7 @@ const difficultyArrays = [
   [15, 19, 20, 21, 22, 25, 24, 23], // 9
 ];
 
-type Question = {
+export type Question = {
   table: number;
   by: number;
   difficulty: number;

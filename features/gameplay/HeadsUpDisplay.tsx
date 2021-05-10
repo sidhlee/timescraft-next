@@ -1,14 +1,17 @@
 import { useAppSelector } from '../../app/hooks';
+import { Question } from './gameplaySlice';
 
-const HeadsUpDisplay = () => {
-  const life = useAppSelector((state) => state.gameplay.life);
-  const currentQuestionIndex = useAppSelector(
-    (state) => state.gameplay.currentQuestionIndex
-  );
-  // TODO: why not getting auto-complete on gameplay states?
-  const currentQuestions = useAppSelector(
-    (state) => state.gameplay.currentQuestions
-  );
+type HeadsUpDisplayProps = {
+  life: number;
+  currentQuestionIndex: number;
+  currentQuestions: Question[];
+};
+
+const HeadsUpDisplay: React.FC<HeadsUpDisplayProps> = ({
+  life,
+  currentQuestionIndex,
+  currentQuestions,
+}) => {
   const remainingTime = useAppSelector((state) => state.gameplay.remainingTime);
 
   // Fill 0 for not finished, 1 for finished questions
