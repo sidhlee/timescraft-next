@@ -61,9 +61,9 @@ const persistedState = loadState();
 
 const initialState = {
   tables: TABLES,
-  currentIndex: 0,
   currentTable: null,
   currentQuestions: TABLES[0],
+  currentQuestionIndex: 0,
   life: 5,
   clearTime: 0,
   remainingTime: 9,
@@ -86,7 +86,7 @@ export const gameplaySlice = createSlice({
         ...state,
         life: 5,
         clearTime: 0,
-        currentIndex: 0,
+        currentQuestionIndex: 0,
         remainingTime: 9,
         isMenuOpen: false,
       };
