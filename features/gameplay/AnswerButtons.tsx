@@ -38,13 +38,20 @@ function getWrongAnswers(question: Question, size = 3) {
 
 type AnswerButtonsProps = {
   question: Question;
+  evaluateAnswer: (correct: boolean) => void;
 };
 
-const AnswerButtons: React.FC<AnswerButtonsProps> = ({ question }) => {
+const AnswerButtons: React.FC<AnswerButtonsProps> = ({
+  question,
+  evaluateAnswer,
+}) => {
   const answers = getAnswers(question);
   const answerButtons = answers.map((answer) => (
-    // TODO: add data-correct attr?
-    <button key={answer.value} className="btn" data-correct={answer.correct}>
+    <button
+      key={answer.value}
+      className="btn"
+      onClick={() => evaluateAnswer(answer.correct)}
+    >
       {answer.value}
     </button>
   ));

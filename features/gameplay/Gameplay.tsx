@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { passQuestion, failQuestion } from './gameplaySlice';
 import AnswerButtons from './AnswerButtons';
 import HeadsUpDisplay from './HeadsUpDisplay';
 import QuestionDisplay from './QuestionDisplay';
@@ -13,15 +14,24 @@ const Gameplay: React.FC = () => {
   const currentQuestion = useAppSelector((state) => {
     const { selectedQuestionLookups, currentQuestionIndex, tables } =
       state.gameplay;
-    const { table, by } = selectedQuestionLookups[currentQuestionIndex];
-    return tables[table][by];
+    const { tableIndex, byIndex } =
+      selectedQuestionLookups[currentQuestionIndex];
+    return tables[tableIndex][byIndex];
   });
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {});
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {}, 1000);
+  // }, []);
+
+  const evaluateAnswer = (correct: boolean) => {
+    if (correct) {
+      dispatch(passQuestion());
+    } else {
+      dispatch(failQuestion());
+    }
+  };
 
   return (
     <section className="sc-play page">
@@ -32,7 +42,10 @@ const Gameplay: React.FC = () => {
       </header>
       <QuestionDisplay question={currentQuestion} />
       <HeadsUpDisplay life={life} currentQuestionIndex={currentQuestionIndex} />
-      <AnswerButtons question={currentQuestion} />
+      <AnswerButtons
+        question={currentQuestion}
+        evaluateAnswer={evaluateAnswer}
+      />
     </section>
   );
 };

@@ -57,8 +57,8 @@ function getTables(difficultyArrays: number[][], maxTable = 9) {
 const TABLES = getTables(difficultyArrays);
 
 type QuestionLookup = {
-  table: number;
-  by: number;
+  tableIndex: number;
+  byIndex: number;
 };
 
 // load state from localStorage
@@ -98,7 +98,7 @@ export const gameplaySlice = createSlice({
       state = initialState;
     },
     resetPlay: (state) => {
-      state = {
+      return {
         ...state,
         life: 5,
         clearTime: 0,
@@ -112,7 +112,7 @@ export const gameplaySlice = createSlice({
         const allQuestions = state.tables.flat();
         const shuffledQuestions = shuffle(allQuestions).slice(0, 9);
         state.selectedQuestionLookups = shuffledQuestions.map(
-          ({ table, by }) => ({ table, by })
+          ({ table, by }) => ({ tableIndex: table - 2, byIndex: by - 2 })
         );
       } else {
         const table = action.payload;
@@ -125,16 +125,13 @@ export const gameplaySlice = createSlice({
         }
 
         state.selectedQuestionLookups = shuffledQuestions.map(
-          ({ table, by }) => ({ table, by })
+          ({ table, by }) => ({ tableIndex: table - 2, byIndex: by - 2 })
         );
       }
     },
     countDown: (state) => {
-      state = {
-        ...state,
-        remainingTime: state.remainingTime - 1,
-        clearTime: state.clearTime + 1,
-      };
+      state.remainingTime--;
+      state.clearTime++;
     },
     failQuestion: (state) => {
       const { tables, selectedQuestionLookups, currentQuestionIndex, life } =
@@ -144,20 +141,37 @@ export const gameplaySlice = createSlice({
       const currentQuestionLookup: QuestionLookup =
         selectedQuestionLookups[currentQuestionIndex];
       const updatedTables = tables.slice();
-      const { table, by } = currentQuestionLookup;
-      updatedTables[table][by].tried++,
-        (updatedTables[table][by].lastTried = new Date().getTime());
+      const { tableIndex, byIndex } = currentQuestionLookup;
+      updatedTables[tableIndex][byIndex].tried++;
+      updatedTables[tableIndex][byIndex].lastTried = new Date().getTime();
 
-      state = {
-        ...state,
-        tables: updatedTables,
-        currentQuestionIndex: currentQuestionIndex + 1,
-      };
+      state.tables = updatedTables;
+      state.currentQuestionIndex++;
+      state.life--;
     },
-    passQuestion: (state) => {},
+    passQuestion: (state) => {
+      const { tables, selectedQuestionLookups, currentQuestionIndex, life } =
+        state;
+
+      // Find the current question from the tables and update info
+      const currentQuestionLookup: QuestionLookup =
+        selectedQuestionLookups[currentQuestionIndex];
+      const updatedTables = tables.slice();
+      const { tableIndex, byIndex } = currentQuestionLookup;
+      const time = new Date().getTime();
+
+      updatedTables[tableIndex][byIndex].tried++;
+      updatedTables[tableIndex][byIndex].lastTried = time;
+      updatedTables[tableIndex][byIndex].lastCorrect = time;
+      updatedTables[tableIndex][byIndex].correct++;
+
+      state.tables = updatedTables;
+      state.currentQuestionIndex++;
+    },
   },
 });
 
-export const { reset, resetPlay } = gameplaySlice.actions;
+export const { reset, resetPlay, countDown, failQuestion, passQuestion } =
+  gameplaySlice.actions;
 
 export default gameplaySlice.reducer;
