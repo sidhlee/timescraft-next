@@ -26,11 +26,11 @@ const HeadsUpDisplay: React.FC<HeadsUpDisplayProps> = ({
   const progressBars = progressArray.map((n, i) => {
     return n ? (
       <div key={i} className="exp col">
-        <img src="./assets/images/exp.png" alt="progress" />
+        <img src="./assets/images/exp-full.png" alt="progress" />
       </div>
     ) : (
       <div key={i} className="exp col">
-        <img src="./assets/images/exp-empty.png" alt="progress" />
+        <img src="./assets/images/exp-empty.png" alt="empty progress" />
       </div>
     );
   });
