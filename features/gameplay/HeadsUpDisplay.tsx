@@ -4,18 +4,16 @@ import { Question } from './gameplaySlice';
 type HeadsUpDisplayProps = {
   life: number;
   currentQuestionIndex: number;
-  currentQuestions: Question[];
 };
 
 const HeadsUpDisplay: React.FC<HeadsUpDisplayProps> = ({
   life,
   currentQuestionIndex,
-  currentQuestions,
 }) => {
   const remainingTime = useAppSelector((state) => state.gameplay.remainingTime);
 
   // Fill 0 for not finished, 1 for finished questions
-  const progressArray = [...Array(currentQuestions.length)].map((_, i) =>
+  const progressArray = [...Array(8)].map((_, i) =>
     i < currentQuestionIndex ? 1 : 0
   );
 

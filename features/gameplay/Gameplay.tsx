@@ -1,4 +1,5 @@
-import { useAppSelector } from '../../app/hooks';
+import { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import AnswerButtons from './AnswerButtons';
 import HeadsUpDisplay from './HeadsUpDisplay';
 import QuestionDisplay from './QuestionDisplay';
@@ -8,11 +9,20 @@ const Gameplay: React.FC = () => {
   const currentQuestionIndex = useAppSelector(
     (state) => state.gameplay.currentQuestionIndex
   );
-  // TODO: why not getting auto-complete on gameplay states?
-  const currentQuestions = useAppSelector(
-    (state) => state.gameplay.currentQuestions
-  );
-  const question = currentQuestions[currentQuestionIndex];
+
+  const currentQuestion = useAppSelector((state) => {
+    const { selectedQuestionLookups, currentQuestionIndex, tables } =
+      state.gameplay;
+    const { table, by } = selectedQuestionLookups[currentQuestionIndex];
+    return tables[table][by];
+  });
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {});
+  }, []);
+
   return (
     <section className="sc-play page">
       <header className="header">
@@ -20,13 +30,9 @@ const Gameplay: React.FC = () => {
           <img src="./assets/images/logo-timescraft.png" alt="TimesCraft" />
         </div>
       </header>
-      <QuestionDisplay question={question} />
-      <HeadsUpDisplay
-        life={life}
-        currentQuestionIndex={currentQuestionIndex}
-        currentQuestions={currentQuestions}
-      />
-      <AnswerButtons question={question} />
+      <QuestionDisplay question={currentQuestion} />
+      <HeadsUpDisplay life={life} currentQuestionIndex={currentQuestionIndex} />
+      <AnswerButtons question={currentQuestion} />
     </section>
   );
 };

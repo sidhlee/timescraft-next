@@ -24,7 +24,6 @@ export default function StartScreen() {
         className={`btn select-${table}`}
         onClick={() => {
           selectTable(table);
-          console.log('click');
           setScreen('play');
         }}
       >

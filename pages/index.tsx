@@ -5,7 +5,21 @@ import Gameplay from '../features/gameplay/Gameplay';
 import StartScreen from '../features/startScreen/StartScreen';
 
 export default function Home() {
-  const currentTable = useAppSelector((state) => state.gameplay.currentTable);
+  const screen = useAppSelector((state) => state.app.screen);
+  let currentScreen;
+  switch (screen) {
+    case 'start': {
+      currentScreen = <StartScreen />;
+      break;
+    }
+    case 'play': {
+      currentScreen = <Gameplay />;
+      break;
+    }
+    default: {
+      currentScreen = <StartScreen />;
+    }
+  }
 
   return (
     <>
@@ -24,8 +38,7 @@ export default function Home() {
       </Head>
 
       <main id="main" className="app-container">
-        {!currentTable && <StartScreen />}
-        {currentTable && <Gameplay />}
+        {currentScreen}
       </main>
     </>
   );

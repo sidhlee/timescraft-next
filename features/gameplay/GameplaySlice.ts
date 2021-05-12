@@ -20,8 +20,8 @@ export type Question = {
   difficulty: number;
   tried: number;
   correct: number;
-  lastTried: Date | null;
-  lastCorrect: Date | null;
+  lastTried: number | null;
+  lastCorrect: number | null;
 };
 
 /**
@@ -56,17 +56,33 @@ function getTables(difficultyArrays: number[][], maxTable = 9) {
 
 const TABLES = getTables(difficultyArrays);
 
+type QuestionLookup = {
+  table: number;
+  by: number;
+};
+
 // load state from localStorage
 const persistedState = loadState();
 
-const initialState = {
+type SliceState = {
+  tables: Question[][];
+  selectedQuestionLookups: null | QuestionLookup[];
+  currentQuestionIndex: number;
+  life: number;
+  clearTime: number;
+  remainingTime: number;
+  score: number;
+  level: number;
+  isMenuOpen: boolean;
+};
+
+const initialState: SliceState = {
   tables: TABLES,
-  currentTable: null,
-  currentQuestions: TABLES[0],
+  selectedQuestionsIndices: null,
   currentQuestionIndex: 0,
   life: 5,
-  clearTime: 0,
-  remainingTime: 9,
+  clearTime: 0, // total seconds took to clear all 8 questions
+  remainingTime: 9, // remaining seconds for each question
   score: 0,
   level: 1,
   isMenuOpen: false,
@@ -95,7 +111,9 @@ export const gameplaySlice = createSlice({
       if (action.payload === 'shuffle') {
         const allQuestions = state.tables.flat();
         const shuffledQuestions = shuffle(allQuestions).slice(0, 9);
-        state.currentQuestions = shuffledQuestions;
+        state.selectedQuestionLookups = shuffledQuestions.map(
+          ({ table, by }) => ({ table, by })
+        );
       } else {
         const table = action.payload;
         const tableIndex = table - 2;
@@ -106,10 +124,37 @@ export const gameplaySlice = createSlice({
           throw new Error('invalid table');
         }
 
-        state.currentQuestions = shuffledQuestions;
-        state.currentTable = table;
+        state.selectedQuestionLookups = shuffledQuestions.map(
+          ({ table, by }) => ({ table, by })
+        );
       }
     },
+    countDown: (state) => {
+      state = {
+        ...state,
+        remainingTime: state.remainingTime - 1,
+        clearTime: state.clearTime + 1,
+      };
+    },
+    failQuestion: (state) => {
+      const { tables, selectedQuestionLookups, currentQuestionIndex, life } =
+        state;
+
+      // Find the current question from the tables and update info
+      const currentQuestionLookup: QuestionLookup =
+        selectedQuestionLookups[currentQuestionIndex];
+      const updatedTables = tables.slice();
+      const { table, by } = currentQuestionLookup;
+      updatedTables[table][by].tried++,
+        (updatedTables[table][by].lastTried = new Date().getTime());
+
+      state = {
+        ...state,
+        tables: updatedTables,
+        currentQuestionIndex: currentQuestionIndex + 1,
+      };
+    },
+    passQuestion: (state) => {},
   },
 });
 

@@ -13,7 +13,6 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     setScreen: (state, action: PayloadAction<Screen>) => {
-      console.log('setScreen');
       state.screen = action.payload;
     },
   },
