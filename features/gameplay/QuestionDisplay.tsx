@@ -14,7 +14,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question }) => {
       <div className={`mob mob-${mob.size}`}>
         <img src={mob.src} alt={mob.name} />
       </div>
-      <div className="speech-bubble hidden">
+      <div className="speech-bubble">
         <p>
           {table} x {by} = ?
         </p>

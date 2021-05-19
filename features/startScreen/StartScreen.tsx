@@ -32,6 +32,11 @@ export default function StartScreen() {
     );
   });
 
+  const handleShuffleButtonClick = () => {
+    selectTable('shuffle');
+    setScreen('play');
+  };
+
   return (
     <section className="sc-start page">
       <div className="title">
@@ -58,7 +63,7 @@ export default function StartScreen() {
         {selectButtons}
         <button
           className="btn select-shuffle"
-          onClick={() => selectTable('shuffle')}
+          onClick={handleShuffleButtonClick}
         >
           Shuffle!
         </button>
