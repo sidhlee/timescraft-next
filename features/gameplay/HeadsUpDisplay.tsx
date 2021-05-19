@@ -12,16 +12,25 @@ const HeadsUpDisplay: React.FC<HeadsUpDisplayProps> = ({
 }) => {
   const remainingTime = useAppSelector((state) => state.gameplay.remainingTime);
 
+  const livesArray = [...Array(5)].map((_, i) => (i < life ? 1 : 0));
   // Fill 0 for not finished, 1 for finished questions
   const progressArray = [...Array(8)].map((_, i) =>
     i < currentQuestionIndex ? 1 : 0
   );
 
-  const lives = [...Array(life)].map((_, i) => (
-    <div key={i} className="col heart">
-      <img src="./assets/images/heart.png" alt="health" />
-    </div>
-  ));
+  // player gets 5 lives initially then each heart gets replaced by grey heart when
+  // user gets the wrong answer
+  const lives = livesArray.map((n, i) => {
+    return n ? (
+      <div key={i} className="col heart">
+        <img src="./assets/images/heart.png" alt="health" />
+      </div>
+    ) : (
+      <div key={i} className="col heart">
+        <img src="./assets/images/heart-gray.png" alt="health" />
+      </div>
+    );
+  });
 
   const progressBars = progressArray.map((n, i) => {
     return n ? (
