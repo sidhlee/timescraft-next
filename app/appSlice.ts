@@ -16,12 +16,12 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setScreen: (state, action: PayloadAction<Screen>) => {
+    goTo: (state, action: PayloadAction<Screen>) => {
       state.screen = action.payload;
     },
   },
 });
 
-export const { setScreen } = appSlice.actions;
+export const { goTo } = appSlice.actions;
 
 export default appSlice.reducer;

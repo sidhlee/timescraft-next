@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { Question } from './gameplaySlice';
 
@@ -11,6 +12,11 @@ const HeadsUpDisplay: React.FC<HeadsUpDisplayProps> = ({
   currentQuestionIndex,
 }) => {
   const remainingTime = useAppSelector((state) => state.gameplay.remainingTime);
+
+  useEffect(() => {
+    if (life === 0) {
+    }
+  }, [life]);
 
   const livesArray = [...Array(5)].map((_, i) => (i < life ? 1 : 0));
   // Fill 0 for not finished, 1 for finished questions
