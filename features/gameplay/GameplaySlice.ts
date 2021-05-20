@@ -68,6 +68,7 @@ type SliceState = {
   tables: Question[][];
   selectedQuestionLookups: null | QuestionLookup[];
   currentQuestionIndex: number;
+  selectedTable: number | 'shuffle' | undefined;
   life: number;
   clearTime: number;
   remainingTime: number;
@@ -79,6 +80,7 @@ type SliceState = {
 const initialState: SliceState = {
   tables: TABLES,
   selectedQuestionsIndices: null,
+  selectedTable: undefined,
   currentQuestionIndex: 0,
   life: 5,
   clearTime: 0, // total seconds took to clear all 8 questions
@@ -94,7 +96,7 @@ export const gameplaySlice = createSlice({
   initialState,
   reducers: {
     save: (state) => {},
-    reset: (state) => {
+    initializeGameData: (state) => {
       state = initialState;
     },
     resetPlay: (state) => {
@@ -108,6 +110,8 @@ export const gameplaySlice = createSlice({
       };
     },
     selectTable: (state, action: PayloadAction<number | 'shuffle'>) => {
+      state.selectedTable = action.payload;
+
       if (action.payload === 'shuffle') {
         const allQuestions = state.tables.flat();
         const shuffledQuestions = shuffle(allQuestions).slice(0, 9);
@@ -146,8 +150,17 @@ export const gameplaySlice = createSlice({
       updatedTables[tableIndex][byIndex].lastTried = new Date().getTime();
 
       state.tables = updatedTables;
-      state.currentQuestionIndex++;
-      state.life--;
+
+      const numQuestions = state.selectedQuestionLookups.length;
+
+      // only increment until index is at the second last place
+      if (state.currentQuestionIndex < numQuestions - 1) {
+        state.currentQuestionIndex++;
+      }
+
+      if (state.life > 0) {
+        state.life--;
+      }
     },
     passQuestion: (state) => {
       const { tables, selectedQuestionLookups, currentQuestionIndex, life } =
@@ -166,12 +179,22 @@ export const gameplaySlice = createSlice({
       updatedTables[tableIndex][byIndex].correct++;
 
       state.tables = updatedTables;
-      state.currentQuestionIndex++;
+
+      const numQuestions = state.selectedQuestionLookups.length;
+      if (state.currentQuestionIndex < numQuestions - 1) {
+        state.currentQuestionIndex++;
+      }
     },
   },
 });
 
-export const { reset, resetPlay, countDown, failQuestion, passQuestion } =
-  gameplaySlice.actions;
+export const {
+  initializeGameData,
+  resetPlay,
+  selectTable,
+  countDown,
+  failQuestion,
+  passQuestion,
+} = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;

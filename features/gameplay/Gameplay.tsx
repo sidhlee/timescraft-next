@@ -14,8 +14,10 @@ const Gameplay: React.FC = () => {
   const currentQuestion = useAppSelector((state) => {
     const { selectedQuestionLookups, currentQuestionIndex, tables } =
       state.gameplay;
+
     const { tableIndex, byIndex } =
       selectedQuestionLookups[currentQuestionIndex];
+
     return tables[tableIndex][byIndex];
   });
 

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type Screen = 'start' | 'play' | 'score' | 'menu';
+export type Screen = 'start' | 'play' | 'results' | 'menu';
 
 type SliceState = {
   screen: Screen;

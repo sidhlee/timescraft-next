@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useAppSelector } from '../app/hooks';
 import SEO from '../components/seo/SEO';
 import Gameplay from '../features/gameplay/Gameplay';
+import Results from '../features/results/results';
 import StartScreen from '../features/startScreen/StartScreen';
 
 export default function Home() {
@@ -14,6 +15,10 @@ export default function Home() {
     }
     case 'play': {
       currentScreen = <Gameplay />;
+      break;
+    }
+    case 'results': {
+      currentScreen = <Results />;
       break;
     }
     default: {

@@ -12,10 +12,6 @@ export default function StartScreen() {
     dispatch(gameplaySlice.actions.selectTable(tableOrShuffle));
   };
 
-  const goTo = (screen: Screen) => {
-    dispatch(appSlice.actions.goTo(screen));
-  };
-
   const selectButtons = [...Array(8)].map((_, i) => {
     const table = i + 2;
     return (
@@ -24,7 +20,7 @@ export default function StartScreen() {
         className={`btn select-${table}`}
         onClick={() => {
           selectTable(table);
-          goTo('play');
+          dispatch(appSlice.actions.goTo('play'));
         }}
       >
         {table}
