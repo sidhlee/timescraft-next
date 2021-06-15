@@ -1,4 +1,19 @@
+import { useResults } from './useResults';
+
 function Score() {
+  const {
+    clearTime,
+    correct,
+    missed,
+    accuracy,
+    difficulty,
+    total,
+    nextLevel,
+    levelAfterClear,
+    levelUpBy,
+    isUp,
+  } = useResults();
+
   return (
     <div className="results--score">
       <header>
@@ -24,43 +39,43 @@ function Score() {
             <tr className="results--score__time mute">
               <td>Clear Time</td>
               <td>
-                <span>48</span>Seconds
+                <span>{clearTime}</span>Seconds
               </td>
             </tr>
             <tr className="results--score__correct">
               <td>Correct</td>
               <td>
-                <span>7</span>
+                <span>{correct}</span>
               </td>
             </tr>
             <tr className="results--score__missed mute">
               <td>Missed</td>
               <td>
-                <span>2</span>
+                <span>{missed}</span>
               </td>
             </tr>
             <tr className="results--score__accuracy">
               <td>Accuracy</td>
               <td>
-                <span>78</span>%
+                <span>{accuracy}</span>%
               </td>
             </tr>
             <tr className="results--score__difficulty mute">
               <td>Difficulty</td>
               <td>
-                <span>83</span>
+                <span>{difficulty}</span>
               </td>
             </tr>
             <tr className="results--score__total">
               <td>Total</td>
               <td>
-                <span>+1400</span>
+                <span>+{total}</span>
               </td>
             </tr>
             <tr className="results--score__next-level">
               <td>Next Level</td>
               <td>
-                <span>1200</span>
+                <span>{nextLevel}</span>
               </td>
             </tr>
           </tbody>
