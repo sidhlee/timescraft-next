@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { passQuestion, failQuestion } from './gameplaySlice';
+import { goTo } from '../../app/appSlice';
 import AnswerButtons from './AnswerButtons';
 import HeadsUpDisplay from './HeadsUpDisplay';
 import QuestionDisplay from './QuestionDisplay';
@@ -30,8 +31,14 @@ const Gameplay: React.FC = () => {
   const evaluateAnswer = (correct: boolean) => {
     if (correct) {
       dispatch(passQuestion());
+      if (currentQuestionIndex === 6) {
+        dispatch(goTo('results'));
+      }
     } else {
       dispatch(failQuestion());
+      if (life === 1) {
+        dispatch(goTo('results'));
+      }
     }
   };
 
