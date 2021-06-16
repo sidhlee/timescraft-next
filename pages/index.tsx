@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useAppSelector } from '../app/hooks';
 import SEO from '../components/seo/SEO';
 import Gameplay from '../features/gameplay/Gameplay';
-import Results from '../features/results/results';
+import Results from '../features/results/Results';
 import StartScreen from '../features/startScreen/StartScreen';
 
 export default function Home() {

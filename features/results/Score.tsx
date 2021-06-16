@@ -1,4 +1,56 @@
+import styled from 'styled-components';
 import { useResults } from './useResults';
+
+const StyledScore = styled.div`
+  // height: 100%;
+
+  header {
+    position: relative;
+    .levelup-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scale(1.1);
+    }
+  }
+
+  .table-wrapper {
+    table {
+      display: inline-block;
+      tbody {
+        display: inline-block;
+        width: 100%;
+        tr {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0.5em;
+        }
+      }
+      width: 100%;
+      height: 80%;
+      max-height: 20em;
+      td,
+      span {
+        font-size: var(--fz-sm);
+      }
+      td {
+        padding: 0.5 0;
+      }
+      .results--score__total {
+        td,
+        span {
+          font-size: var(--fz-lg);
+        }
+      }
+      tr {
+        td:last-child {
+          text-align: right;
+        }
+      }
+    }
+  }
+`;
 
 function Score() {
   const {
@@ -10,21 +62,21 @@ function Score() {
     total,
     nextLevel,
     levelAfterClear,
-    levelUpBy,
+    levelUpBy, // how many levels the player goes up by as the result of this game
     isUp,
   } = useResults();
 
   return (
-    <div className="results--score">
+    <StyledScore className="results--score">
       <header>
         <img
           className="clear-img"
-          src="../../public/assets/images/logo-clear.png"
+          src="./assets/images/logo-clear.png"
           alt="Clear!"
         />
         <img
-          className="levelup-img hidden"
-          src="../../public/assets/images/logo-level-up.png"
+          className={isUp ? 'levelup-img' : 'levelup-img hidden'}
+          src="./assets/images/logo-level-up.png"
           alt="Level Up!"
         />
       </header>
@@ -81,7 +133,7 @@ function Score() {
           </tbody>
         </table>
       </main>
-    </div>
+    </StyledScore>
   );
 }
 

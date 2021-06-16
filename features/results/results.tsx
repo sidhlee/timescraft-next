@@ -10,7 +10,11 @@ export default function Results() {
   const dispatch = useAppDispatch();
   const died = life === 0;
 
-  const result = died ? <GameOver /> : <Score />;
+  // makes sense to have GameOver and Score as children to Results
+  // because they share the buttons with the exact same functionality
+  // - Try again / main
+
+  const scoreOrGameOver = died ? <GameOver /> : <Score />;
 
   function handleAgainButtonClick() {
     dispatch(resetPlay());
@@ -30,7 +34,7 @@ export default function Results() {
         className={`overlay page results backdrop${died ? ' danger' : ''}`}
       >
         <div className={'overlay-content'}>
-          {result}
+          {scoreOrGameOver}
           <div className="results__buttons">
             <button className="btn btn-again" onClick={handleAgainButtonClick}>
               Try Again!
