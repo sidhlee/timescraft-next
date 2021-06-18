@@ -1,15 +1,24 @@
 import styled from 'styled-components';
+import { animated, useTransition } from 'react-spring';
 import { useResults } from './useResults';
+import { useEffect, useState } from 'react';
+import {} from 'bezier-easing';
 
 const StyledScore = styled.div`
   // height: 100%;
 
   header {
     position: relative;
+    height: 4rem;
+    .clear-img,
     .levelup-img {
+      display: block;
       position: absolute;
       top: 0;
       left: 0;
+    }
+
+    .levelup-img {
       transform: scale(1.1);
     }
   }
@@ -66,19 +75,59 @@ function Score() {
     isUp,
   } = useResults();
 
+  const [levelUpDisplayed, setLevelUpDisplayed] = useState(false);
+  useEffect(() => {
+    if (isUp) {
+      window?.setTimeout(() => {
+        setLevelUpDisplayed(true);
+      }, 1000);
+    }
+  }, []);
+
+  const transitions = useTransition(levelUpDisplayed, {
+    initial: {
+      opacity: 1,
+      transform: `translate3d(0, 0, 0)`,
+    },
+    from: {
+      opacity: 0,
+      transform: `translate3d(-1000px, 0, 0)`,
+    },
+    enter: {
+      opacity: 1,
+      transform: `translate3d(0, 0px, 0)`,
+      config: {
+        mass: 2,
+        tension: 200,
+        friction: 22,
+      },
+    },
+    leave: {
+      opacity: 0,
+      transform: `translate3d(0, -100%, 0)`,
+      config: {
+        mass: 1,
+        tension: 75,
+        friction: 20,
+      },
+    },
+  });
+
   return (
     <StyledScore className="results--score">
       <header>
-        <img
-          className="clear-img"
-          src="./assets/images/logo-clear.png"
-          alt="Clear!"
-        />
-        <img
-          className={isUp ? 'levelup-img' : 'levelup-img hidden'}
-          src="./assets/images/logo-level-up.png"
-          alt="Level Up!"
-        />
+        {transitions((styles, levelUp) => (
+          <animated.img
+            className={levelUp ? 'levelup-img' : 'clear-img'}
+            src={
+              levelUp
+                ? './assets/images/logo-level-up.png'
+                : './assets/images/logo-clear.png'
+            }
+            alt={levelUp ? 'Level Up!' : 'Clear!'}
+            style={styles}
+          />
+        ))}
       </header>
       <main className="table-wrapper">
         <table className="score">
