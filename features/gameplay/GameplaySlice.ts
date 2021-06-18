@@ -185,6 +185,13 @@ export const gameplaySlice = createSlice({
         state.currentQuestionIndex++;
       }
     },
+    updateLevelAndScore: (
+      state,
+      action: PayloadAction<{ newLevel: number; newScore: number }>
+    ) => {
+      state.level = action.payload.newLevel;
+      state.score = action.payload.newScore;
+    },
   },
 });
 
@@ -195,6 +202,7 @@ export const {
   countDown,
   failQuestion,
   passQuestion,
+  updateLevelAndScore,
 } = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;

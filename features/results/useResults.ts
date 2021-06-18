@@ -27,9 +27,9 @@ function getLevelInfo(total: number) {
 }
 
 export function useResults() {
-  const { clearTime, life, currentQuestions, level } = useAppSelector(
+  const { clearTime, life, currentQuestions, level, score } = useAppSelector(
     (state) => {
-      const { tables, selectedQuestionLookups, life, clearTime, level } =
+      const { tables, selectedQuestionLookups, life, clearTime, level, score } =
         state.gameplay;
 
       const currentQuestions = selectedQuestionLookups.map((lookup) => {
@@ -41,6 +41,7 @@ export function useResults() {
         life,
         currentQuestions,
         level,
+        score,
       };
     }
   );
@@ -52,7 +53,8 @@ export function useResults() {
   }, 0);
   const total = getGameScore(accuracy, difficulty, clearTime);
   const { scoreToNextLevel, upBy, isUp } = getLevelInfo(total);
-  const levelAfterClear = level + upBy;
+  const newLevel = level + upBy;
+  const newScore = score + total;
 
   return {
     clearTime,
@@ -62,8 +64,8 @@ export function useResults() {
     difficulty,
     total,
     nextLevel: scoreToNextLevel,
-    levelAfterClear,
-    levelUpBy: upBy,
+    newLevel,
+    newScore,
     isUp,
   };
 }

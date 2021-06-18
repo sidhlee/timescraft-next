@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import { useAppDispatch } from '../../app/hooks';
+import { updateLevelAndScore } from '../gameplay/gameplaySlice';
 import { animated, useTransition } from 'react-spring';
 import { useResults } from './useResults';
 import { useEffect, useState } from 'react';
-import {} from 'bezier-easing';
 
 const StyledScore = styled.div`
   // height: 100%;
@@ -70,13 +71,17 @@ function Score() {
     difficulty,
     total,
     nextLevel,
-    levelAfterClear,
-    levelUpBy, // how many levels the player goes up by as the result of this game
+    newLevel,
+    newScore,
     isUp,
   } = useResults();
 
+  const dispatch = useAppDispatch();
+
   const [levelUpDisplayed, setLevelUpDisplayed] = useState(false);
   useEffect(() => {
+    dispatch(updateLevelAndScore({ newLevel, newScore }));
+
     if (isUp) {
       window?.setTimeout(() => {
         setLevelUpDisplayed(true);
