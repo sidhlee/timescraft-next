@@ -30,7 +30,7 @@ export default function StartScreen() {
 
   const handleShuffleButtonClick = () => {
     selectTable('shuffle');
-    goTo('play');
+    dispatch(appSlice.actions.goTo('play'));
   };
 
   return (
