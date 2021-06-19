@@ -56,6 +56,15 @@ You cannot have a primitive value as the state of a slice
 
 - [Mutating and Returning State](https://redux-toolkit.js.org/usage/immer-reducers#mutating-and-returning-state)
 
+### Redux Persist example
+
+When you're accessing localStorage to load up some data to render to the page, you'll get `Text content did not match` warning because next server is not aware of the localStorage which is only available in the browser.
+
+You can use `redux-persist` library to solve this problem.
+
+- [redux-persist](https://www.npmjs.com/package/redux-persist)
+- [GitHub Repo](https://github.com/vercel/next.js/tree/canary/examples/with-redux-persist)
+
 ## Troubleshooting
 
 ### Warning: Prop `className` did not match when using styled components
